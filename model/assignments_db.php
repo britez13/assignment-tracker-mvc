@@ -15,7 +15,7 @@
         }
 
         $statement = $db->prepare($query);
-        $statement->bindValue('course_id',$course_id);
+        $statement->bindValue(':course_id', $course_id);
         $statement->execute();
         $assignments = $statement->fetchAll();
         $statement->closeCursor();
@@ -23,5 +23,20 @@
     }
 
     function delete_assignment($assignment_id) {
-        
+        global $db;
+        $query = 'DELETE FROM assigments WHERE ID = :assign_id';
+        $statement = $db->prepare($query);
+        $statement->bindValue(':assign_id', $assignment_id);
+        $statement->execute();
+        $statement->closeCursor();
+    }
+
+    function add_assignment($course_id, $description) {
+        global $db;
+        $query = 'INSERT INTO assignments (Description, CourseID) VALUES(:descr, :courseID)';
+        $statement = $db->prepare($query);
+        $statement->bindValue(':descr', $description);
+        $statement->bindValue(':courseID', $course_id);
+        $statement->execute();
+        $statement->closeCursor();
     }
